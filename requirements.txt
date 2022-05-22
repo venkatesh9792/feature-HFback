@@ -1,0 +1,6 @@
+psycopg~=3.0.13
+psycopg2~=2.9.3
+pool~=0.1.2.dev0
+Flask~=2.1.2
+peewee~=3.14.10
+Authlib~=1.0.1
