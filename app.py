@@ -60,6 +60,7 @@ def login():
     session["state"] = state
     return redirect(authorization_url)
 
+
 # callback page
 @app.route('/authorize')
 def authorize():
@@ -81,6 +82,7 @@ def authorize():
     session["name"] = id_info.get("name")
 
     return redirect("/plans")
+
 
 # clear session and logout
 @app.route('/logout')
