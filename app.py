@@ -1,25 +1,21 @@
 import os
 import pathlib
-
 import requests
 from flask import Flask, url_for, redirect, session, abort
-
+from flask_restful import Api
 from google.oauth2 import id_token
 from google_auth_oauthlib.flow import Flow
 from pip._vendor import cachecontrol
 import google.auth.transport.requests
-
 from resources.cuisine import *
 from resources.menus import MenuList
 from resources.cuisinerecipe import *
-
 from resources.recipedetails import RecipeDetails
 
-# connect to db and creates necessary tables.
-setup()
+setup()  # connect to db and creates necessary tables.
 
 app = Flask(__name__)
-os.environ["OAUTHLIB_INSECURE_TRANSPORT"] = "1"
+os.environ["OAUTHLIB_INSECURE_TRANSPORT"] = "1"  # OAuth acces
 app.secret_key = '!secret'
 api = Api(app)
 
@@ -33,24 +29,7 @@ flow = Flow.from_client_secrets_file(
 )
 
 
-# # oauth config
-# oauth = OAuth(app)
-# google = oauth.register(
-#     name='google',
-#     client_id='69465386927-uov5kn1vgopkp818ro01qjmkgfrttnso.apps.googleusercontent.com',
-#     client_secret='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',
-#     # access_token_url='',
-#     # access_token_params='',
-#     # authorize_url='',
-#     # authorize_params='',
-#     # api_base_url='',
-#     # client_kwargs=''
-#     server_metadata_url='https://accounts.google.com/.well-known/openid-configuration',
-#     client_kwargs={'scope': 'openid profile email'}
-#
-# )
-
-
+# decorator to check if login is required
 def login_is_required(function):
     def wrapper(*args, **kwargs):
         if "google_id" not in session:
@@ -61,30 +40,27 @@ def login_is_required(function):
     return wrapper
 
 
+# Home Page
 @app.route('/')
 def index():
     return "Welcome Food Court !!"
 
 
+# Plans page Login required
 @app.route('/plans')
 @login_is_required
 def plans():
     return redirect('/menus')
 
 
+# login page
 @app.route('/login')
 def login():
     authorization_url, state = flow.authorization_url()
     session["state"] = state
     return redirect(authorization_url)
 
-    # session["google_id"] = "Test"
-    # return redirect("/plans")
-    # google = oauth.create_client('google')
-    # redirect_uri = url_for('authorize', _external=True)
-    # return google.authorize_redirect(redirect_uri)
-
-
+# callback page
 @app.route('/authorize')
 def authorize():
     flow.fetch_token(authorization_response=request.url)
@@ -104,18 +80,9 @@ def authorize():
     session["google_id"] = id_info.get("sub")  # defing the results to show on the page
     session["name"] = id_info.get("name")
 
-    # google = oauth.create_client('google')
-    # token = google.authorize_access_token()
-    # print(token)
-    # json_str = json.dumps(token)
-    # resp = json.loads(json_str)
-    # print(resp["email"])
-    # # resp = google.get('user_info')
-    # # user_info = resp.json()
-    # # session['email'] = token['email']
     return redirect("/plans")
 
-
+# clear session and logout
 @app.route('/logout')
 def logout():
     session.clear()

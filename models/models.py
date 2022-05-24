@@ -64,7 +64,10 @@ class MenuRecipes(BaseModel):
 
 
 def setup():
+    # connect to DB
     db.connect()
+
+    # Create all the tables
     db.create_tables([Cuisines,
                       Ingredients,
                       Menus,
@@ -83,9 +86,11 @@ def update_cuisine(cuisine, status):
     row = Cuisines.get(Cuisines.cuisine == cuisine)
     row.status = status
     row.save()
-    # qry = User.update({User.age: 25}).where(User.age > 20)
-    # print(qry.sql())
-    # qry.execute()
+
+
+def update_recipe_rating(recipe_id, rating):
+    qry = Recipes.update({Recipes.rating: rating}).where(Recipes.recipeId == recipe_id)
+    qry.execute()
 
 
 def delete_cuisine(cuisine):
@@ -108,7 +113,6 @@ def create_recipe(recipe, description, prep_time, cuisine_id):
                    description=description,
                    prepTime=prep_time,
                    cuisineId=cuisine_id
-
                    )
 
 
@@ -137,6 +141,7 @@ def menus():
     return getList(qs)
 
 
+# obtain list from dicts
 def getList(qs):
     lst = []
     for q in qs:

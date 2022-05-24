@@ -1,6 +1,6 @@
-from flask_restful import Resource, Api, request
+from flask_restful import Resource, request
 
-from hf_db import *
+from models.models import *
 
 
 class CuisineRecipe(Resource):

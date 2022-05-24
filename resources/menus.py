@@ -1,6 +1,6 @@
 from flask_restful import Resource
 
-from hf_db import menus
+from models.models import menus
 
 
 class MenuList(Resource):
