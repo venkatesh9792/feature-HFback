@@ -1,18 +1,24 @@
 # Overview
-This Api allows to access and update data for Menu, Recipes and its details , Cuisines.
+This Api allows to access for Menu, Recipes, Cuisines and its detail.
 
-## Model
+## Database Model
 ![img.png](img.png)
 
-## TechStack
-Python 3+
-PeeWee ORM
+## Tech
+Python 3+ -
+PeeWee ORM -
 Flask Web Framework
 
 ## Authentication
 Google OAuth2
-## Setup
+
+## TechImplementation - Setup
+bash file - https://github.com/venkatesh9792/feature-HFback/blob/master/hfbackend.sh
+performs docker compose build and up, runs data set up DML scripts.
+
 
 ## Testing screenshots
 https://github.com/venkatesh9792/feature-HFback/blob/master/Hf-Testing.xlsx
-Pytest -Not performed
+postman collections - https://github.com/venkatesh9792/feature-HFback/blob/master/HF.postman_collection.json
+
+Pytest - Not performed
