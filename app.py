@@ -99,4 +99,4 @@ api.add_resource(RecipeDetails, '/cuisine/<string:cui_name>/recipe/<int:rec_id>'
 
 api.add_resource(MenuList, '/menus')
 
-app.run(port=5000, debug=True)
+app.run(host='0.0.0.0', debug=True)

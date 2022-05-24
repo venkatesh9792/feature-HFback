@@ -10,9 +10,10 @@ services:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: admin
       POSTGRES_DB: postgres
-      POSTGRES_HOST: 127.0.0.1
+    volumes:
+      - ./dataSetupScripts.sql:/dataSetupScripts.sql
   hf:
-    image: hfapp
+    image: hf-app
     restart: always
     depends_on:
       - database

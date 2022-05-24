@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "e42176d0-61d9-46be-bf03-87ff9d168498",
+		"_postman_id": "c615d408-2cfe-40b1-bfc8-3bca4c9c9dc9",
 		"name": "HF",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "18344456"
@@ -34,14 +34,14 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "localhost:5000/cuisine/indian",
+							"raw": "localhost:5000/cuisine/Indian",
 							"host": [
 								"localhost"
 							],
 							"port": "5000",
 							"path": [
 								"cuisine",
-								"indian"
+								"Indian"
 							]
 						},
 						"description": "This will return a recipe"
@@ -54,14 +54,14 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "localhost:5000/cuisine/indian",
+							"raw": "localhost:5000/cuisine/Indian",
 							"host": [
 								"localhost"
 							],
 							"port": "5000",
 							"path": [
 								"cuisine",
-								"indian"
+								"Indian"
 							]
 						},
 						"description": "This will return a recipe"
@@ -79,6 +79,21 @@
 								"type": "text"
 							}
 						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"status\" :true\r\n}"
+						},
+						"url": {
+							"raw": "localhost:5000/cuisine/Chinese",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"cuisine",
+								"Chinese"
+							]
+						},
 						"description": "This will return a recipe"
 					},
 					"response": []
@@ -99,14 +114,14 @@
 							"raw": "{\r\n    \"status\" : false\r\n}"
 						},
 						"url": {
-							"raw": "localhost:5000/cuisine/indian",
+							"raw": "localhost:5000/cuisine/Indian",
 							"host": [
 								"localhost"
 							],
 							"port": "5000",
 							"path": [
 								"cuisine",
-								"indian"
+								"Indian"
 							]
 						},
 						"description": "This will return a recipe"
@@ -114,10 +129,20 @@
 					"response": []
 				},
 				{
-					"name": "/recipe/<cuisine> Copy",
+					"name": "/menus",
 					"request": {
 						"method": "GET",
 						"header": [],
+						"url": {
+							"raw": "localhost:5000/menus",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"menus"
+							]
+						},
 						"description": "This will return a recipe"
 					},
 					"response": []
@@ -134,6 +159,17 @@
 								"disabled": true
 							}
 						],
+						"url": {
+							"raw": "localhost:5000/cuisine/Chinese",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"cuisine",
+								"Chinese"
+							]
+						},
 						"description": "This will return a recipe"
 					},
 					"response": []
@@ -164,7 +200,21 @@
 					"name": "login",
 					"request": {
 						"method": "GET",
-						"header": []
+						"header": [],
+						"url": {
+							"raw": "http://127.0.0.1:5000/login",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "5000",
+							"path": [
+								"login"
+							]
+						}
 					},
 					"response": []
 				},
@@ -174,14 +224,14 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "localhost:5000/cuisine/chinese/recipes",
+							"raw": "localhost:5000/cuisine/Indian/recipes",
 							"host": [
 								"localhost"
 							],
 							"port": "5000",
 							"path": [
 								"cuisine",
-								"chinese",
+								"Indian",
 								"recipes"
 							]
 						}
@@ -192,7 +242,20 @@
 					"name": "otherdetails",
 					"request": {
 						"method": "GET",
-						"header": []
+						"header": [],
+						"url": {
+							"raw": "localhost:5000/cuisine/Indian/recipe/1",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"cuisine",
+								"Indian",
+								"recipe",
+								"1"
+							]
+						}
 					},
 					"response": []
 				},
@@ -211,7 +274,7 @@
 							}
 						},
 						"url": {
-							"raw": "localhost:5000/cuisine/chinese/recipe/3",
+							"raw": "localhost:5000/cuisine/chinese/recipe/1",
 							"host": [
 								"localhost"
 							],
@@ -220,7 +283,7 @@
 								"cuisine",
 								"chinese",
 								"recipe",
-								"3"
+								"1"
 							]
 						}
 					},
@@ -232,7 +295,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://127.0.0.1:5000/login",
+							"raw": "http://127.0.0.1:5000/logout",
 							"protocol": "http",
 							"host": [
 								"127",
@@ -242,7 +305,7 @@
 							],
 							"port": "5000",
 							"path": [
-								"login"
+								"logout"
 							]
 						}
 					},

@@ -5,7 +5,7 @@ This Api allows to access and update data for Menu, Recipes and its details , Cu
 ![img.png](img.png)
 
 ## TechStack
-
+Python 3+
 PeeWee ORM
 Flask Web Framework
 
@@ -15,3 +15,4 @@ Google OAuth2
 
 ## Testing screenshots
 https://github.com/venkatesh9792/feature-HFback/blob/master/Hf-Testing.xlsx
+Pytest -Not performed

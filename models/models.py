@@ -1,6 +1,7 @@
 from peewee import *
 
-db = PostgresqlDatabase('postgres', user='postgres', password='admin', host='localhost')
+# Db connection parameters
+db = PostgresqlDatabase('postgres', user='postgres', password='admin',  host='database')
 
 
 class BaseModel(Model):
@@ -78,6 +79,7 @@ def setup():
                       MenuRecipes])
 
 
+# ER Maps
 def create_cuisine(cuisine, status):
     Cuisines.create(cuisine=cuisine, status=status)
 
