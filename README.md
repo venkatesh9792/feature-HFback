@@ -17,8 +17,8 @@ bash file - https://github.com/venkatesh9792/feature-HFback/blob/master/hfbacken
 performs docker compose build and up, runs data set up DML scripts.
 
 
-## Testing screenshots
-https://github.com/venkatesh9792/feature-HFback/blob/master/Hf-Testing.xlsx
+## Testing 
+Screenshots - https://github.com/venkatesh9792/feature-HFback/blob/master/Hf-Testing.xlsx
 postman collections - https://github.com/venkatesh9792/feature-HFback/blob/master/HF.postman_collection.json
 
 Pytest - Not performed
