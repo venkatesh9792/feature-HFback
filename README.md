@@ -1,5 +1,5 @@
 # Overview
-This Api allows to access for Menu, Recipes, Cuisines and its detail.
+This Api allows to access for Menu, Recipes, Cuisines and its detail for Menu planning.
 
 
 
@@ -12,8 +12,10 @@ This Api allows to access for Menu, Recipes, Cuisines and its detail.
 ##### Python 3+
 ##### PeeWee ORM
 ##### Flask Web Framework
-
-
+##### Docker as container
+##### Pycharm as IDE
+##### PostgreSQL DB
+##### Postman
 
 
 ## Authentication
@@ -23,7 +25,7 @@ This Api allows to access for Menu, Recipes, Cuisines and its detail.
 
 ## TechImplementation - Setup
 ##### bash file - https://github.com/venkatesh9792/feature-HFback/blob/master/hfbackend.sh
-##### performs docker compose build and up, runs data set up DML scripts.
+##### performs docker compose build and up, runs data set up - DML scripts.
 
 
 
