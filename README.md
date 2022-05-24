@@ -9,8 +9,8 @@ This Api allows to access for Menu, Recipes, Cuisines and its detail.
 
 
 ## Tech
-##### Python 3+ -
-##### PeeWee ORM -
+##### Python 3+
+##### PeeWee ORM
 ##### Flask Web Framework
 
 
@@ -32,4 +32,4 @@ This Api allows to access for Menu, Recipes, Cuisines and its detail.
 ##### Screenshots - https://github.com/venkatesh9792/feature-HFback/blob/master/Hf-Testing.xlsx
 ##### postman collections - https://github.com/venkatesh9792/feature-HFback/blob/master/HF.postman_collection.json
 
-### Pytest - Not performed
+##### Pytest - Not performed
