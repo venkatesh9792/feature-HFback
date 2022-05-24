@@ -48,7 +48,6 @@ class RecipeIngredients(BaseModel):
     recipeId = ForeignKeyField(Recipes, backref='recipe-ingredients')
     amount = TextField()
     ingredientId = ForeignKeyField(Ingredients, backref='recipe-ingredients')
-    cuisineId = ForeignKeyField(Cuisines, backref='recipes')
     Instructions = TextField()
 
 
@@ -76,20 +75,69 @@ def setup():
                       MenuRecipes])
 
 
-def create_cuisine(cuisine):
-    Cuisines.create(cuisine=cuisine, status=True)
+def create_cuisine(cuisine, status):
+    Cuisines.create(cuisine=cuisine, status=status)
+
+
+def update_cuisine(cuisine, status):
+    row = Cuisines.get(Cuisines.cuisine == cuisine)
+    row.status = status
+    row.save()
+    # qry = User.update({User.age: 25}).where(User.age > 20)
+    # print(qry.sql())
+    # qry.execute()
+
+
+def delete_cuisine(cuisine):
+    qry = Cuisines.delete().where(Cuisines.cuisine == cuisine)
+    qry.execute()
 
 
 def retrieveAllCuisines():
     qs = Cuisines.select().dicts()
-    lst = []
-    for q in qs:
-        lst.append(q)
-    return lst
+    return getList(qs)
 
 
 def retrieveCuisine(cuisine):
     qs = Cuisines.select().where(Cuisines.cuisine == cuisine).dicts()
+    return getList(qs)
+
+
+def create_recipe(recipe, description, prep_time, cuisine_id):
+    Recipes.create(recipe=recipe,
+                   description=description,
+                   prepTime=prep_time,
+                   cuisineId=cuisine_id
+
+                   )
+
+
+def recipes_for_cuisine(cuisine):
+    qs = Recipes.select().join(Cuisines).where((Cuisines.cuisine == cuisine)).dicts()
+    return getList(qs)
+
+
+def ingredients(cuisine, recipe_id):
+    qs = Cuisines.select(Ingredients).join(Recipes).join(RecipeIngredients).join(Ingredients).where(
+        (Cuisines.cuisine == cuisine) & (Recipes.recipeId == recipe_id)).dicts()
+
+    return getList(qs)
+
+
+def nutrition(cuisine, recipe_id):
+    qs = Cuisines.select(NutritionInformation).join(Recipes).join(RecipeNutritionInformation).join(
+        NutritionInformation).where(
+        (Cuisines.cuisine == cuisine) & (Recipes.recipeId == recipe_id)).dicts()
+
+    return getList(qs)
+
+
+def menus():
+    qs = Menus.select(Menus.menu, Recipes.recipe).join(MenuRecipes).join(Recipes).dicts()
+    return getList(qs)
+
+
+def getList(qs):
     lst = []
     for q in qs:
         lst.append(q)

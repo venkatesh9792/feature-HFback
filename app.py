@@ -1,46 +1,133 @@
-from authlib.integrations.flask_client import OAuth
-from flask import Flask, url_for, redirect
+import os
+import pathlib
 
-from cuisine import *
+import requests
+from flask import Flask, url_for, redirect, session, abort
+
+from google.oauth2 import id_token
+from google_auth_oauthlib.flow import Flow
+from pip._vendor import cachecontrol
+import google.auth.transport.requests
+
+from resources.cuisine import *
+from resources.menus import MenuList
+from resources.cuisinerecipe import *
+
+from resources.recipedetails import RecipeDetails
 
 # connect to db and creates necessary tables.
 setup()
 
 app = Flask(__name__)
+os.environ["OAUTHLIB_INSECURE_TRANSPORT"] = "1"
+app.secret_key = '!secret'
 api = Api(app)
 
-app.secret_key = '!secret'
-# oauth config
-oauth = OAuth(app)
-google = oauth.register(
-    name='google',
-    client_id='69465386927-uov5kn1vgopkp818ro01qjmkgfrttnso.apps.googleusercontent.com',
-    client_secret='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',
-    # access_token_url='',
-    # access_token_params='',
-    # authorize_url='',
-    # authorize_params='',
-    # api_base_url='',
-    # client_kwargs=''
-    server_metadata_url='https://accounts.google.com/.well-known/openid-configuration',
-    client_kwargs={'scope': 'openid profile email'}
-
+GOOGLE_CLIENT_ID = "69465386927-uov5kn1vgopkp818ro01qjmkgfrttnso.apps.googleusercontent.com"
+client_secrets_file = os.path.join(pathlib.Path(__file__).parent, "client_secret.json")
+flow = Flow.from_client_secrets_file(
+    client_secrets_file=client_secrets_file,
+    scopes=["https://www.googleapis.com/auth/userinfo.profile", "https://www.googleapis.com/auth/userinfo.email",
+            "openid"],
+    redirect_uri="http://127.0.0.1:5000/authorize"
 )
+
+
+# # oauth config
+# oauth = OAuth(app)
+# google = oauth.register(
+#     name='google',
+#     client_id='69465386927-uov5kn1vgopkp818ro01qjmkgfrttnso.apps.googleusercontent.com',
+#     client_secret='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',
+#     # access_token_url='',
+#     # access_token_params='',
+#     # authorize_url='',
+#     # authorize_params='',
+#     # api_base_url='',
+#     # client_kwargs=''
+#     server_metadata_url='https://accounts.google.com/.well-known/openid-configuration',
+#     client_kwargs={'scope': 'openid profile email'}
+#
+# )
+
+
+def login_is_required(function):
+    def wrapper(*args, **kwargs):
+        if "google_id" not in session:
+            return abort(401)  # Auth Required
+        else:
+            return function()
+
+    return wrapper
+
+
+@app.route('/')
+def index():
+    return "Welcome Food Court !!"
+
+
+@app.route('/plans')
+@login_is_required
+def plans():
+    return redirect('/menus')
 
 
 @app.route('/login')
 def login():
-    redirect_uri = url_for('authorize', _external=True)
-    return oauth.google.authorize_redirect(redirect_uri)
+    authorization_url, state = flow.authorization_url()
+    session["state"] = state
+    return redirect(authorization_url)
+
+    # session["google_id"] = "Test"
+    # return redirect("/plans")
+    # google = oauth.create_client('google')
+    # redirect_uri = url_for('authorize', _external=True)
+    # return google.authorize_redirect(redirect_uri)
 
 
 @app.route('/authorize')
 def authorize():
-    token = oauth.google.authorize_access_token()
-    return redirect('/cuisines')
+    flow.fetch_token(authorization_response=request.url)
+    if not session["state"] == request.args["state"]:
+        abort(500)  # Unmatched State
+
+    credentials = flow.credentials
+    request_session = requests.session()
+    cached_session = cachecontrol.CacheControl(request_session)
+    token_request = google.auth.transport.requests.Request(session=cached_session)
+
+    id_info = id_token.verify_oauth2_token(
+        id_token=credentials._id_token,
+        request=token_request,
+        audience=GOOGLE_CLIENT_ID
+    )
+    session["google_id"] = id_info.get("sub")  # defing the results to show on the page
+    session["name"] = id_info.get("name")
+
+    # google = oauth.create_client('google')
+    # token = google.authorize_access_token()
+    # print(token)
+    # json_str = json.dumps(token)
+    # resp = json.loads(json_str)
+    # print(resp["email"])
+    # # resp = google.get('user_info')
+    # # user_info = resp.json()
+    # # session['email'] = token['email']
+    return redirect("/plans")
 
 
+@app.route('/logout')
+def logout():
+    session.clear()
+    return redirect('/')
+
+
+# Resources
 api.add_resource(Cuisine, '/cuisine/<string:name>')
 api.add_resource(CuisineList, '/cuisines')
+api.add_resource(CuisineRecipes, '/cuisine/<string:name>/recipes')
+api.add_resource(RecipeDetails, '/cuisine/<string:cui_name>/recipe/<int:rec_id>')
+
+api.add_resource(MenuList, '/menus')
 
 app.run(port=5000, debug=True)
